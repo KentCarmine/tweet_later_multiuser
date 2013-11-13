@@ -25,20 +25,29 @@ get '/auth' do
     :oauth_secret => @access_token.secret
     )
 
-  session[:current_user] = current_user
+  session[:current_user_id] = current_user.id
 
   erb :index
 end
 
 post '/' do
-  @twitter_username = session[:current_user].username
+  @current_user = User.find(session[:current_user_id])
+  @twitter_username = @current_user.username
+  tweet_delay = params[:tweet_delay].to_i
+  puts "DELAY: #{tweet_delay}"
+  # @tweet = @current_user.tweets.create(:tweet_text => params[:tweet_text])
+  # @tweet = Tweet.create(:tweet_text => params[:tweet_text], :user_id => @current_user.id)
 
-  twitter_user = Twitter::Client.new(
-    :oauth_token => session[:current_user].oauth_token,
-    :oauth_token_secret => session[:current_user].oauth_secret
-  )
+  # puts "TWEET TEXT IN POST: #{params[:tweet_text]}"
 
-  twitter_user.update(params[:tweet_text])
+  @current_user.tweet(params[:tweet_text], tweet_delay)
+
+  # twitter_user = Twitter::Client.new(
+  #   :oauth_token => User.find(session[:current_user_id]).oauth_token,
+  #   :oauth_token_secret => User.find(session[:current_user_id]).oauth_secret
+  # )
+
+  # twitter_user.update(params[:tweet_text])
 
   redirect to '/'
 end
