@@ -25,3 +25,6 @@ group :test do
 end
 
 gem 'twitter'
+
+gem 'sidekiq'
+gem 'redis'
