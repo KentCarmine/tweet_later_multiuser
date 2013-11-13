@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>Tweet Now! 2: Multi-User</h1>
+
+  <% if session[:current_user].nil? %>
+  <button><a href="/sign_in">Sign In with Twitter</a></button>
+  <% else %>
+  <p><strong>Tweeting as: </strong> <%= session[:current_user].username  %></p>
+  <form action="/" method="POST" id="tweet_form">
+    <textarea rows="6" cols="50" name="tweet_text" class="tweet_form_elements" id="tweet-box"></textarea><br>
+    <input type="submit" value="Tweet Now!" class="tweet_form_elements">
+  </form>
+  <br>
+  <p>
+    <button><a href="/sign_out">Sign Out</a></button>
+  </p>
+  <% end %>
+</div>
